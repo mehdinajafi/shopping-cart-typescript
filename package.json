@@ -4,14 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "webpack --config webpack.config.prod.js"
+    "start": "npm run watch:css && webpack-dev-server",
+    "build": "webpack --config webpack.config.prod.js",
+    "watch:css": "postcss src/styles/tailwind.css -o src/styles/index.css"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "autoprefixer": "^9.7.4",
     "clean-webpack-plugin": "^3.0.0",
+    "postcss-cli": "^7.1.0",
+    "tailwindcss": "^1.9.1",
     "ts-loader": "^8.0.7",
     "typescript": "^4.0.5",
     "webpack": "^4.41.2",

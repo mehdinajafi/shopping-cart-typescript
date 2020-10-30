@@ -7,13 +7,13 @@ class View {
 
     products?.forEach((product: productType) => {
       productsElements += `
-      <div>
-        <img src=${product.image} />
-        <div>
-          <h1>${product.title}</h1>
+      <div class="w-40">
+        <img src=${product.image} class="h-40" />
+        <div class="h-40">
+          <h1 class="text-2xl h-24">${product.title}</h1>
           <h3>$${product.price}</h3>
         </div>
-        <button>Add to cart</button>
+        <button type="button">Add to cart</button>
       </div>
       `
     })
