@@ -11,7 +11,62 @@
     <title>Shopping Cart</title>
   </head>
   <body>
-    <div id="products"></div>
+    <nav class="sticky top-0 p-5 bg-primary-700 text-white">
+      <ul class="container h-12 flex items-center">
+        <li class="font-bold text-2xl sm:text-3xl">Shopping Cart</li>
+        <li
+          id="openCart"
+          class="ml-auto p-2 rounded cursor-pointer transition-colors duration-300 hover:bg-gray-400 hover:text-gray-900"
+        >
+          <svg
+            viewBox="0 0 16 16"
+            class="w-8 h-8"
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8 1a2.5 2.5 0 0 0-2.5 2.5V4h5v-.5A2.5 2.5 0 0 0 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V5H2z"
+            />
+          </svg>
+        </li>
+      </ul>
+    </nav>
+    <main>
+      <section id="products" class="container flex flex-wrap my-4"></section>
+
+      <section id="cart-wrapper" class="w-screen hidden">
+        <div id="cartUnderlay" class="fixed inset-0 bg-dark-800"></div>
+        <div
+          id="cart-modal"
+          class="rounded fixed top-hide inset-x-0 transition-all duration-500 ease-out bg-white"
+        >
+          <div
+            id="cart-header"
+            class="flex justify-between items-center p-4 text-gray-900"
+          >
+            <div class="font-bold text-3xl">cart</div>
+            <div
+              id="closeCart"
+              class="rounded cursor-pointer hover:bg-gray-200"
+            >
+              <svg
+                viewBox="0 0 16 16"
+                class="w-12 h-12"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+                />
+              </svg>
+            </div>
+          </div>
+          <div id="cart-body"></div>
+        </div>
+      </section>
+    </main>
     <script defer src="../dist/bundle.js"></script>
   </body>
 </html>
