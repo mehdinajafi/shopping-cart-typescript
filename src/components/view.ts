@@ -1,9 +1,10 @@
 import { productType } from "./product"
+import Storager from "./storager"
 
 interface ViewInterface {
   openCart(): void
   closeCart(): void
-  showProducts(products: productType[] | undefined): void
+  showProducts(products: productType[] | []): void
 }
 
 const cartModal = document.querySelector("#cart-modal") as HTMLElement
@@ -22,7 +23,7 @@ class View implements ViewInterface {
     cartModal.style.top = "-100vh"
   }
 
-  showProducts(products: productType[] | undefined) {
+  showProducts(products: productType[] | []) {
     const productsDom = document.querySelector("#products")!
     let productsElements = ""
 
@@ -34,12 +35,23 @@ class View implements ViewInterface {
           <h1 class="text-sm font-bold h-12 text-gray-900">${product.title}</h1>
           <h3 class="font-bold text-gray-600">$${product.price}</h3>
         </div>
-        <button type="button" class="w-full p-2 rounded bg-primary-700 hover:bg-primary-800 text-white">Add to cart</button>
+        <button data-id=${product.id} type="button" class="product-btn w-full p-2 rounded bg-primary-700 hover:bg-primary-800 text-white">Add to cart</button>
       </div>
       `
     })
 
     productsDom.innerHTML = productsElements
+  }
+
+  getCartButtons() {
+    const buttons = [...document.querySelectorAll(".product-btn")]
+    buttons.forEach((button) => {
+      let productId = (button as HTMLButtonElement).dataset.id
+      button.addEventListener("click", () => {
+        const newCartItem = Storager.getProduct(Number(productId))
+        Storager.cart = [...Storager.cart, newCartItem]
+      })
+    })
   }
 }
 

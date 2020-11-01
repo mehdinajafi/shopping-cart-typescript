@@ -6,11 +6,16 @@ const product = new Product()
 const view = new View()
 
 document.addEventListener("DOMContentLoaded", () => {
-  product.getProducts().then((products) => {
-    view.showProducts(products)
-    // Save products in Local Storage
-    Storager.saveProducts(products)
-  })
+  product
+    .getProducts()
+    .then((products) => {
+      view.showProducts(products)
+      // Save products in Local Storage
+      Storager.saveProducts(products)
+    })
+    .then(() => {
+      view.getCartButtons()
+    })
 })
 
 // Cart Modal

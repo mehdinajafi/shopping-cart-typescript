@@ -7,11 +7,11 @@ export type productType = {
 }
 
 interface ProductInterface {
-  getProducts(): Promise<productType[] | undefined>
+  getProducts(): Promise<productType[] | []>
 }
 
 class Product implements ProductInterface {
-  public getProducts(): Promise<productType[] | undefined>
+  public getProducts(): Promise<productType[] | []>
 
   async getProducts() {
     try {
@@ -21,7 +21,8 @@ class Product implements ProductInterface {
       const data: productType[] = await result.json()
       return data
     } catch (error) {
-      throw new Error(error)
+      //throw new Error(error)
+      return []
     }
   }
 }
