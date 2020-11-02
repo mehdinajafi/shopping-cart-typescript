@@ -52,17 +52,19 @@ class View implements ViewInterface {
       cartElements += `
         <div class="flex items-center justify-between my-4">
           <div class="flex items-center w-1/5">
-            <svg
-            viewBox="0 0 16 16"
-            class="w-12 h-12 mr-4 rounded cursor-pointer hover:bg-gray-200"
-            fill="currentColor"
-            xmlns="http://www.w3.org/2000/svg"
-            >
-            <path
-              fill-rule="evenodd"
-              d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
-            />
-            </svg>
+            <div class="remove-item" data-id=${cartItem.id} >
+              <svg
+                viewBox="0 0 16 16"
+                class="w-12 h-12 mr-4 rounded cursor-pointer hover:bg-gray-200"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+                >
+                <path
+                  fill-rule="evenodd"
+                  d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+                />
+              </svg>
+            </div>
             <img src=${cartItem.image} alt=${cartItem.title} class="w-12 hidden sm:block" />
           </div>
           <div class="w-2/4" >${cartItem.title}</div>
@@ -88,19 +90,26 @@ class View implements ViewInterface {
   }
 
   getCartButtons() {
-    const buttons = [...document.querySelectorAll(".product-btn")]
-    buttons.forEach((button) => {
-      let productId = (button as HTMLButtonElement).dataset.id
-      // Add product to cart & Save cart in localStorage
+    const addToCartBtn = [
+      ...document.querySelectorAll<HTMLButtonElement>(".product-btn"),
+    ]
+    addToCartBtn.forEach((button) => {
+      let productId = button.dataset.id
       button.addEventListener("click", () => {
         const newCartItem = {
           ...Storager.getProduct(Number(productId)),
           quantity: 1,
         }
+        // Add product to cart
         Storager.cart = [...Storager.cart, newCartItem]
+        // Save cart in localStorage
         Storager.saveCart(Storager.cart)
+        // Clac total price and items
         this.setCartValues(Storager.cart)
+        // Show cart items in dom
         this.showCartItems(Storager.cart)
+        // Set cart item btns
+        this.cartProcess()
       })
     })
   }
@@ -122,9 +131,37 @@ class View implements ViewInterface {
     totalPriceDOM.innerHTML = `Total price: $${totalPrice.toFixed(2)}`
   }
 
+  cartProcess() {
+    const removeItemBTNS = [
+      ...document.querySelectorAll<HTMLButtonElement>(".remove-item"),
+    ]
+
+    // Remove item from dom and localStorage
+    removeItemBTNS?.forEach((removeBTN) => {
+      let productId = removeBTN.dataset.id
+      removeBTN?.addEventListener("click", () => {
+        if (productId && removeBTN.parentElement?.parentElement) {
+          this.removeProduct(Number(productId))
+          cartBodyDOM.removeChild(removeBTN.parentElement.parentElement)
+        }
+      })
+    })
+  }
+
+  // Remove product
+  removeProduct(id: number): void {
+    Storager.cart = Storager.cart.filter((product) => {
+      return product.id !== id
+    })
+    // Save new cart in localStorage
+    Storager.saveCart(Storager.cart)
+    // Clac new total price and items
+    this.setCartValues(Storager.cart)
+  }
+
+  // For get cart items from localStorage
   initApp(): void {
     Storager.cart = Storager.getCart()
-    console.log(Storager.cart)
     this.setCartValues(Storager.cart)
     this.showCartItems(Storager.cart)
   }

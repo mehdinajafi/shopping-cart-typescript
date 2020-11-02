@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then(() => {
       view.getCartButtons()
+      view.cartProcess()
     })
 })
 
