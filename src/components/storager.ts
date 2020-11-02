@@ -31,6 +31,10 @@ class Storager {
       throw new Error("محصول پیدا نشد")
     }
   }
+
+  static getCart(): cartInterface[] | [] {
+    return JSON.parse(localStorage.getItem("cart") || "[]")
+  }
 }
 
 export default Storager

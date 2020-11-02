@@ -6,6 +6,8 @@ const product = new Product()
 const view = new View()
 
 document.addEventListener("DOMContentLoaded", () => {
+  view.initApp()
+
   product
     .getProducts()
     .then((products) => {
@@ -15,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then(() => {
       view.getCartButtons()
-      view.setCartValues(Storager.cart)
     })
 })
 

@@ -121,6 +121,13 @@ class View implements ViewInterface {
     cartItemsDOM.innerHTML = totalItems.toString()
     totalPriceDOM.innerHTML = `Total price: $${totalPrice.toFixed(2)}`
   }
+
+  initApp(): void {
+    Storager.cart = Storager.getCart()
+    console.log(Storager.cart)
+    this.setCartValues(Storager.cart)
+    this.showCartItems(Storager.cart)
+  }
 }
 
 export default View
