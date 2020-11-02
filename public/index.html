@@ -16,7 +16,7 @@
         <li class="font-bold text-2xl sm:text-3xl">Shopping Cart</li>
         <li
           id="openCart"
-          class="ml-auto p-2 rounded cursor-pointer transition-colors duration-300 hover:bg-gray-400 hover:text-gray-900"
+          class="relative ml-auto p-2 rounded cursor-pointer transition-colors duration-300 hover:bg-gray-400 hover:text-gray-900"
         >
           <svg
             viewBox="0 0 16 16"
@@ -29,6 +29,10 @@
               d="M8 1a2.5 2.5 0 0 0-2.5 2.5V4h5v-.5A2.5 2.5 0 0 0 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V5H2z"
             />
           </svg>
+          <span
+            class="cart-items absolute top-0 p-1 rounded-full text-sm text-white bg-red-600"
+            >0</span
+          >
         </li>
       </ul>
     </nav>
@@ -39,11 +43,11 @@
         <div id="cartUnderlay" class="fixed inset-0 bg-dark-800"></div>
         <div
           id="cart-modal"
-          class="rounded fixed top-hide inset-x-0 transition-all duration-500 ease-out bg-white"
+          class="rounded fixed top-hide inset-x-0 transition-all duration-500 ease-out bg-white p-4"
         >
           <div
             id="cart-header"
-            class="flex justify-between items-center p-4 text-gray-900"
+            class="flex justify-between items-center text-gray-900"
           >
             <div class="font-bold text-3xl">cart</div>
             <div
@@ -64,6 +68,9 @@
             </div>
           </div>
           <div id="cart-body"></div>
+          <div id="cart-footer">
+            <div class="total-price font-bold">Total price: 0</div>
+          </div>
         </div>
       </section>
     </main>

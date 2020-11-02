@@ -1,5 +1,5 @@
 import { productType } from "./product"
-import Storager from "./storager"
+import Storager, { cartInterface } from "./storager"
 
 interface ViewInterface {
   openCart(): void
@@ -9,6 +9,8 @@ interface ViewInterface {
 
 const cartModal = document.querySelector("#cart-modal") as HTMLElement
 const cartWrapper = document.querySelector("#cart-wrapper") as HTMLElement
+const cartItemsDOM = document.querySelector(".cart-items") as HTMLSpanElement
+const totalPriceDOM = document.querySelector(".total-price") as HTMLDivElement
 
 class View implements ViewInterface {
   openCart() {
@@ -55,8 +57,26 @@ class View implements ViewInterface {
         }
         Storager.cart = [...Storager.cart, newCartItem]
         Storager.saveCart(Storager.cart)
+        this.setCartValues(Storager.cart)
       })
     })
+  }
+
+  setCartValues(cart: cartInterface[]) {
+    let totalPrice: number = 0
+    let totalItems: number = 0
+
+    totalPrice = cart.reduce(
+      (totalPrice, product) => totalPrice + product.quantity * product.price,
+      0
+    )
+    totalItems = cart.reduce(
+      (totalPrice, product) => totalPrice + product.quantity,
+      0
+    )
+
+    cartItemsDOM.innerHTML = totalItems.toString()
+    totalPriceDOM.innerHTML = `Total price: $${totalPrice.toFixed(2)}`
   }
 }
 

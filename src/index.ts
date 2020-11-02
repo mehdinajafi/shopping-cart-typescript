@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then(() => {
       view.getCartButtons()
+      view.setCartValues(Storager.cart)
     })
 })
 
