@@ -1,17 +1,35 @@
 import { productType } from "./product"
 
-class Storager {
-  static cart: (productType | undefined)[] = []
+export interface cartInterface {
+  id: number
+  image: string
+  title: string
+  price: number
+  inventory: number
+  quantity: number
+}
 
-  static saveProducts(products: productType[] | []): void {
+class Storager {
+  static cart: cartInterface[] = []
+
+  static saveProducts(products: productType[]): void {
     localStorage.setItem("products", JSON.stringify(products))
   }
 
-  static getProduct(id: number) {
-    let products: productType[] | null = JSON.parse(
+  static saveCart(cart: cartInterface[]): void {
+    localStorage.setItem("cart", JSON.stringify(cart))
+  }
+
+  static getProduct(id: number): productType {
+    let products: productType[] = JSON.parse(
       localStorage.getItem("products") || "{}"
     )
-    return products?.find((product) => product.id === id)
+    let product = products.find((product) => product.id === id)
+    if (product) {
+      return product
+    } else {
+      throw new Error("محصول پیدا نشد")
+    }
   }
 }
 

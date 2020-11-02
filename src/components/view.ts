@@ -4,7 +4,7 @@ import Storager from "./storager"
 interface ViewInterface {
   openCart(): void
   closeCart(): void
-  showProducts(products: productType[] | []): void
+  showProducts(products: productType[]): void
 }
 
 const cartModal = document.querySelector("#cart-modal") as HTMLElement
@@ -23,7 +23,7 @@ class View implements ViewInterface {
     cartModal.style.top = "-100vh"
   }
 
-  showProducts(products: productType[] | []) {
+  showProducts(products: productType[]) {
     const productsDom = document.querySelector("#products")!
     let productsElements = ""
 
@@ -47,9 +47,14 @@ class View implements ViewInterface {
     const buttons = [...document.querySelectorAll(".product-btn")]
     buttons.forEach((button) => {
       let productId = (button as HTMLButtonElement).dataset.id
+      // Add product to cart & Save cart in localStorage
       button.addEventListener("click", () => {
-        const newCartItem = Storager.getProduct(Number(productId))
+        const newCartItem = {
+          ...Storager.getProduct(Number(productId)),
+          quantity: 1,
+        }
         Storager.cart = [...Storager.cart, newCartItem]
+        Storager.saveCart(Storager.cart)
       })
     })
   }
