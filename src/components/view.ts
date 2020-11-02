@@ -69,7 +69,7 @@ class View implements ViewInterface {
           </div>
           <div class="w-2/4" >${cartItem.title}</div>
           <div class="flex items-center">
-            <div>
+            <div class="decrease-quantity" data-id=${cartItem.id}>
               <svg viewBox="0 0 16 16" class="w-8 h-8 mr-1 rounded cursor-pointer hover:bg-gray-200" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
               </svg>
@@ -169,6 +169,43 @@ class View implements ViewInterface {
             // Save new item in localStorage and set new total price and total item
             Storager.saveCart(Storager.cart)
             this.setCartValues(Storager.cart)
+          }
+        }
+      })
+    })
+
+    // ---- Decrease product quantity
+    const decreaseQuantityBtns = [
+      ...document.querySelectorAll<HTMLDivElement>(".decrease-quantity"),
+    ]
+    decreaseQuantityBtns?.forEach((decreaseBtn) => {
+      // Find the product ID from its dataset
+      let productId = decreaseBtn.dataset.id
+      decreaseBtn?.addEventListener("click", () => {
+        if (productId) {
+          // Find the product based on its ID in the card array
+          const product = Storager.cart.find(
+            (cartItem) => cartItem.id.toString() === productId
+          )
+          if (
+            product &&
+            decreaseBtn.nextElementSibling &&
+            decreaseBtn.parentElement?.parentElement
+          ) {
+            if (product.quantity > 0) {
+              // Decrease the quantity of products
+              product.quantity -= 1
+              // Show it in dom
+              decreaseBtn.nextElementSibling.innerHTML = product.quantity.toString()
+              // Save new item in localStorage and set new total price and total item
+              Storager.saveCart(Storager.cart)
+              this.setCartValues(Storager.cart)
+            } else {
+              // Remove cart item from dom
+              cartBodyDOM.removeChild(decreaseBtn.parentElement.parentElement)
+              // Remove cart item from localStorage
+              this.removeProduct(Number(productId))
+            }
           }
         }
       })
