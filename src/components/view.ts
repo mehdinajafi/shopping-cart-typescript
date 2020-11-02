@@ -75,7 +75,7 @@ class View implements ViewInterface {
               </svg>
             </div>
             <div>${cartItem.quantity}</div>
-            <div>
+            <div class="add-quantity" data-id=${cartItem.id}>
               <svg viewBox="0 0 16 16" class="w-8 h-8 ml-1 rounded cursor-pointer hover:bg-gray-200" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
               </svg>
@@ -132,6 +132,7 @@ class View implements ViewInterface {
   }
 
   cartProcess() {
+    // ---- Remove cart item from cart
     const removeItemBTNS = [
       ...document.querySelectorAll<HTMLButtonElement>(".remove-item"),
     ]
@@ -143,6 +144,32 @@ class View implements ViewInterface {
         if (productId && removeBTN.parentElement?.parentElement) {
           this.removeProduct(Number(productId))
           cartBodyDOM.removeChild(removeBTN.parentElement.parentElement)
+        }
+      })
+    })
+
+    // ---- Add product quantity
+    const addQuantityBtns = [
+      ...document.querySelectorAll<HTMLDivElement>(".add-quantity"),
+    ]
+    addQuantityBtns?.forEach((addBtn) => {
+      // Find the product ID from its dataset
+      let productId = addBtn.dataset.id
+      addBtn?.addEventListener("click", () => {
+        if (productId) {
+          // Find the product based on its ID in the card array
+          const product = Storager.cart.find(
+            (cartItem) => cartItem.id.toString() === productId
+          )
+          if (product && addBtn.previousElementSibling) {
+            // Increase the quantity of products
+            product.quantity += 1
+            // Show it in dom
+            addBtn.previousElementSibling.innerHTML = product.quantity.toString()
+            // Save new item in localStorage and set new total price and total item
+            Storager.saveCart(Storager.cart)
+            this.setCartValues(Storager.cart)
+          }
         }
       })
     })
